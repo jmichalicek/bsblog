@@ -5,7 +5,7 @@ from django.views.decorators.cache import cache_control, cache_page
 from django.http import Http404
 
 from taxonomy import models as taxonomy
-from bscms.models import Post, Category
+from models import Post, Category
 
 
 from time import strptime
@@ -15,7 +15,7 @@ from time import strptime
 def index(request,page=0):
     start_index = int(page) * 5;
     end_index = start_index + 5;
-    post_list = Post.objects.filter(category__on_front_page=True, published=True).order_by('-created_date')[start_index:end_index]
+    post_list = Post.objects.filter(published=True).order_by('-created_date')[start_index:end_index]
 
     next_page = int(page) + 1
     previous_page = int(page) - 1

@@ -1,4 +1,3 @@
-# Create your views here.
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.views.decorators.cache import cache_control, cache_page
@@ -6,7 +5,6 @@ from django.http import Http404
 
 from taxonomy import models as taxonomy
 from models import Post, Category
-
 
 from time import strptime
 
@@ -23,7 +21,7 @@ def index(request,page=0):
         previous_page = 0
 
     return render_to_response(
-        'cms/index.html',
+        'bsblog/index.html',
         {'post_list': post_list,
          'next_page': next_page,
          'previous_page': previous_page},
@@ -35,11 +33,11 @@ def index(request,page=0):
 def item(request,year,month,day,slug):
     post = get_object_or_404(Post,slug=slug)
 
-    previous = Post.objects.filter(id__lt=post.id).order_by('-id')[:1]
-    next_post = Post.objects.filter(id__gt=post.id).order_by('id')[:1]
+    previous = Post.objects.filter(id__lt=post.id, published=True).order_by('-id')[:1]
+    next_post = Post.objects.filter(id__gt=post.id, published=True).order_by('id')[:1]
     
     return render_to_response(
-        'cms/detail.html',
+        'bsblog/detail.html',
         {'post': post, 'previous': previous, 'next': next_post},
         context_instance=RequestContext(request)
         )
@@ -48,14 +46,17 @@ def list_posts(request,year,month):
     posts = Post.objects.filter(created_date__year=year,created_date__month=strptime(month,'%b').tm_mon).order_by('-created_date')
 
     return render_to_response(
-        'cms/list.html',
+        'bsblog/list.html',
         {'posts':posts},
         context_instance=RequestContext(request)
         )
 
-def posts_by_category(request, category):
-    category = get_object_or_404(Category, name=category)
-    posts = Post.objects.filter(category=category, published=True)
+def posts_by_category(request, category, template='bsblog/category_posts.html'):
+    posts = Post.objects.filter(category__name=category, published=True)
+    return render_to_response(
+        template,
+        {'posts': posts},
+        context_instance=RequestContext(request))
 
 
 def projects(request):
@@ -64,7 +65,7 @@ def projects(request):
     taxonomy_group = taxonomy.TaxonomyGroup.objects.get(name="Programming Languages")
     
     return render_to_response(
-        'cms/projects.html',
+        'bsblog/projects.html',
         {'projects': projects,
          'taxonomy_group': taxonomy_group},
         context_instance=RequestContext(request)

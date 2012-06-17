@@ -43,8 +43,13 @@ class Post(taxonomy.TaxonomyMember):
         db_index=True
     )
 
+    @models.permalink
     def get_absolute_url(self):
-        return "/%s/%s/" %(self.created_date.strftime("%Y/%b/%d").lower(), self.slug)
+        #return "/%s/%s/" %(self.created_date.strftime("%Y/%b/%d").lower(), self.slug)
+        year = self.created_date.strftime('%Y')
+        month = self.created_date.strftime('%b').lower()
+        day = self.created_date.strftime('%d')
+        return ('bsblog_full_post_url', [year, month, day, self.slug])
 
     def __unicode__(self):
         return u'%s' %(self.title)

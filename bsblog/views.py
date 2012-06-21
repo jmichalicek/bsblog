@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, EmptyPage
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.views.decorators.cache import cache_control, cache_page
@@ -8,57 +9,54 @@ from models import Post, Category
 
 from time import strptime
 
-@cache_control(max_age=3600)
-@cache_page(60 * 15)
-def index(request,page=0):
-    start_index = int(page) * 5;
-    end_index = start_index + 5;
-    post_list = Post.objects.filter(published=True).order_by('-created_date')[start_index:end_index]
-
-    next_page = int(page) + 1
-    previous_page = int(page) - 1
-    if previous_page == -1:
-        previous_page = 0
+def archive(request, year=None, month=None, category=None):
+    post_list = Post.objects.filter(published=True)
+    if category is not None:
+        post_list = post_list.filter(category__name=category)
+    if year is not None:
+        post_list = post_list.filter(created_date__year=year)
+        if month is not None:
+            post_list = post_list.filter(created_date__month=strptime(month,'%b').tm_mon)
 
     return render_to_response(
         'bsblog/index.html',
-        {'post_list': post_list,
-         'next_page': next_page,
-         'previous_page': previous_page},
+        {'post_list': post_list},
         context_instance=RequestContext(request)
         )
 
-@cache_control(max_age=3600)
-@cache_page(60 * 15)
-def item(request,year,month,day,slug):
-    post = get_object_or_404(Post,slug=slug)
 
-    previous = Post.objects.filter(id__lt=post.id, published=True).order_by('-id')[:1]
-    next_post = Post.objects.filter(id__gt=post.id, published=True).order_by('id')[:1]
+def index(request, page=1, post_limit=None):
+
+    page = int(page)
+    if post_limit is not None:
+        post_limit = int(post_limit)
+
+    pages = Paginator(Post.objects.filter(published=True).order_by('-created_date'), post_limit)
+    try:
+        post_list = pages.page(page)
+    except EmptyPage:
+        raise Http404()
+        
+    return render_to_response(
+        'bsblog/index.html',
+        {'post_list': post_list,
+         'current_page': page,
+         },
+        context_instance=RequestContext(request)
+        )
+
+def item(request,year,month,day,slug):
+    post = get_object_or_404(Post, created_date__year=year,
+                             created_date__month=strptime(month, '%b').tm_mon,
+                             created_date__day=day, slug=slug)
     
     return render_to_response(
-        'bsblog/detail.html',
-        {'post': post, 'previous': previous, 'next': next_post},
+        'bsblog/blog_post.html',
+        {'post': post},
         context_instance=RequestContext(request)
         )
 
-def list_posts(request,year,month):
-    posts = Post.objects.filter(created_date__year=year,created_date__month=strptime(month,'%b').tm_mon).order_by('-created_date')
-
-    return render_to_response(
-        'bsblog/list.html',
-        {'posts':posts},
-        context_instance=RequestContext(request)
-        )
-
-def posts_by_category(request, category, template='bsblog/category_posts.html'):
-    posts = Post.objects.filter(category__name=category, published=True)
-    return render_to_response(
-        template,
-        {'posts': posts},
-        context_instance=RequestContext(request))
-
-
+# deprecated.  This is going to move to a whole new app
 def projects(request):
     category = Category.objects.get(name="Projects")
     projects = Post.objects.filter(published=1, category=category)

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{% block title %}Bash-Shell.Net{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/main.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="hero-unit header" id="header"><div id="nav">
+          <ul class="nav nav-pills nav-stacked">
+            <li><a href="/">Blog</a></li>
+            <li><a href="/blog/projects/">Projects</a></li>
+            {% load flatpages %}
+            {% get_flatpages '/about/' as about_pages %} {# there should be only one #}
+            {% for page in about_pages %}
+            <li><a href="{{ page.url }}">About</a></li>
+            {% endfor %}
+            <li><a href="/feeds/rss/">RSS<img src="{{ STATIC_URL }}img/feed-icon_orange-12px.png"/></a></li>
+        </div>
+        <h1>Bash-Shell.Net</h1></div>
+      <div id="content" class="page_content">
+	  {% block primary %}{% endblock %}
+      </div>
+    </div>
+  </body>
+</html>

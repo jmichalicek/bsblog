@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-package_data = []
+package_data = ['templates/bsblog/*.html']
 dependencies = ['Markdown']
 # Untested below... 
 # dependency_links = ['https://github.com/jmichalicek/django-taxonomies/zipball/master#egg=django-taxonomies1.0']

@@ -1,14 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'bsblog/base.html' %}
 {% block pagetitle %}{{post.title}}{% endblock %}
-<div id="primary">
-    <h1>{% block title %}{% endblock %}</h1>
-</div>
-
 {% block primary %}
-<div class="post_title">
-  <h2 style="margin:0px">Whoops!</h2>
-</div>
-<div class="post_wrapper">
-  You seem to have tried to access a page that doesn't exist!
+<div class="well">
+  <div class="page-header">
+    <h2>Whoops!</h2>
+  </div>
+  <hr />
+  <p>
+    You seem to have tried to access a page that doesn't exist!
+  </p>
 </div>
 {% endblock %}

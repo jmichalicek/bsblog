@@ -1,15 +1,11 @@
 {% extends 'bsblog/base.html' %}
-{% block pagetitle %}{{ post.title }}{% endblock %}
-<div id="primary">
-    <h1>{% block title %}{% endblock %}</h1>
-</div>
-
-{% block primary %}
-<div class="post_title">
-  <h2 style="margin:0px">{{ post.title }}</h2>
-  by {{ post.user_profile.user.username}} on {{ post.created_date|date:"N j, Y, P T" }}
-</div>
-<div class="post_wrapper">
+  {% block primary %}
+<div class="well">
+  <div class="page-header">
+    <h2>{{ post.title }}</h2>
+    <em>by {{ post.user_profile.user.username}} on {{ post.created_date|date:"N j, Y, P T" }}</em>
+  </div>
+  <hr />
   {{ post.text_html|safe }}
 </div>
 {% endblock %}

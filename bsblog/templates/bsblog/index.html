@@ -1,17 +1,16 @@
 {% extends 'bsblog/base.html' %}
 {% block primary %}
 {% for post in post_list %}
-<div class="post_container">
-  <div class="post_title">
-    <h2 style="margin:0px">{{ post.title }}</h2>
-    by {{ post.user_profile.user.username}} on {{ post.created_date|date:"N j, Y, P T" }}
+<div class="well">
+  <div class="header">
+    <h2>{{ post.title }}</h2>
+   <em> by {{ post.user_profile.user.username}} on {{ post.created_date|date:"N j, Y, P T" }}</em>
   </div>
-  <div class="post_wrapper">
+  <hr />
+  <p>
     {{ post.text_html|truncatewords_html:"100"|safe }}
-    <div style="padding:2px">
-      <span><a href="{{ post.get_absolute_url }}">&rarr; read more</a></span>
-    </div>
-  </div>
+  </p>
+  <span><a href="{{ post.get_absolute_url }}">&rarr; read more</a></span>
 </div>
 {% endfor %}
 <ul class="pager">

@@ -19,8 +19,8 @@ def archive(request, year=None, month=None, category=None):
             post_list = post_list.filter(created_date__month=strptime(month,'%b').tm_mon)
 
     return render_to_response(
-        'bsblog/index.html',
-        {'post_list': post_list},
+        'bsblog/archive.html',
+        {'post_list': post_list.order_by('created_date')},
         context_instance=RequestContext(request)
         )
 

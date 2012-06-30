@@ -4,8 +4,10 @@
 {% regroup post_list by created_date.year as posts_by_year %}
 <div class="accordion">
   {% for year in posts_by_year reversed %}
-  <div class="well section row">
-    <div class="accordion-heading" data-toggle="collapse" data-target="#archive_{{ year.grouper }}"><h2>{{ year.grouper }}<i class="icon-arrow-down icon-white"></i></h2></div>
+  <div class="well">
+    <div class="accordion-heading" data-toggle="collapse" data-target="#archive_{{ year.grouper }}">
+      <h2>{{ year.grouper }}<i class="icon-arrow-down icon-white"></i></h2>
+    </div>
     <div class="accordion-body collapse {% if forloop.first %}in{% endif %}" id="archive_{{ year.grouper }}">
       {% for post in year.list reversed %}
       <div class="accordion-inner">
@@ -15,6 +17,6 @@
       {% endfor %}
     </div> <!-- end accordion body -->
   </div>
-{% endfor %}
+  {% endfor %}
 </div> <!--end accordion-->
 {% endblock%}

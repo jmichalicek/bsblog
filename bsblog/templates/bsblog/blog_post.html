@@ -1,6 +1,6 @@
 {% extends 'bsblog/base.html' %}
-  {% block primary %}
-<div class="well">
+{% block primary %}
+<div class="row well">
   <div class="page-header">
     <h2>{{ post.title }}</h2>
     <em>by {{ post.user_profile.user.username}} on {{ post.created_date|date:"N j, Y, P T" }}</em>

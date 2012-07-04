@@ -56,15 +56,3 @@ def item(request,year,month,day,slug):
         context_instance=RequestContext(request)
         )
 
-# deprecated.  This is going to move to a whole new app
-def projects(request):
-    category = Category.objects.get(name="Projects")
-    projects = Post.objects.filter(published=1, category=category)
-    taxonomy_group = taxonomy.TaxonomyGroup.objects.get(name="Programming Languages")
-    
-    return render_to_response(
-        'bsblog/projects.html',
-        {'projects': projects,
-         'taxonomy_group': taxonomy_group},
-        context_instance=RequestContext(request)
-        )    

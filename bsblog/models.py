@@ -60,7 +60,9 @@ class Post(taxonomy.TaxonomyMember):
 
 # signal handlers
 def create_profile(sender, **kwargs):
-    if kwargs.get('created') == True:
+    # The check for raw makes this not run when the user was loaded
+    # from a fixture
+    if kwargs.get('created') and not kwargs.get('raw', False):
         UserProfile.objects.create(user=kwargs.get('instance'))
 
 post_save.connect(create_profile, sender=User)

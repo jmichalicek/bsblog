@@ -3,6 +3,9 @@ from setuptools import setup, find_packages
 package_data = ['templates/bsblog/*.html', 'static/bsblog/js/*', 'static/bsblog/css/*',
                 'static/bsblog/img/*', 'fixtures/*,json', 'fixtures/*.xml']
 dependencies = ['Markdown']
+dependency_links = [
+    'https://github.com/jmichalicek/django-taxonomies/tarball/master#egg=django-taxonomies',
+]
 # Untested below... 
 # dependency_links = ['https://github.com/jmichalicek/django-taxonomies/zipball/master#egg=django-taxonomies1.0']
 setup(name = "bsblog",
@@ -15,5 +18,7 @@ setup(name = "bsblog",
       #'package' package must contain files (see list above)
       package_data = {'bsblog' : package_data },
       install_requires = dependencies,
+      dependency_links=dependency_links,
+      test_suite = 'test_project',
       long_description = """A django CMS/Blog app""" 
 )

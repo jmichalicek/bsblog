@@ -1,4 +1,4 @@
-Tell Travis you want a Python environment to test in
+#Tell Travis you want a Python environment to test in
 language: python
 # List the versions of Python you'd like to test against
 python:
@@ -9,7 +9,13 @@ python:
 env:
   - DJANGO_VERSION=1.4
 # Tell it the things it will need to install when it boots
-install: 
- - pip install Django==$DJANGO_VERSION
+install:
+ - pip install -q -r travis.pip
+ - pip install -q  Django==$DJANGO_VERSION
+ - python setup.py install
+
+before_script:
+ - psql -c 'create database bsblog_test;' -U postgres
+
 # Tell Travis how to run the test script itself
-script: python test_project/runtests.py 
+script: python test_project/manage.py test bsblog

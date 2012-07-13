@@ -1,6 +1,7 @@
 #This file mainly exists to allow python setup.py test to work.
 # based on http://ericholscher.com/blog/2009/jun/29/enable-setuppy-test-your-django-apps/
 # except I can't manage to get this to actually work from setup.py.  It works standalone, though
+# It does not seem to load fixtures, so back to the drawing board on this.
 import os, sys
 os.environ['DJANGO_SETTINGS_MODULE'] = 'test_project.settings'
 

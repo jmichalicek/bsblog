@@ -13,21 +13,21 @@
       {{ post.text_html|truncatewords_html:"100"|safe }}
       <span><a href="{{ post.get_absolute_url }}">&rarr; read more</a></span>
     </div>
-    {% endfor %}
-    <div class="row">
-      <ul class="pager">
-	{% if post_list.has_previous %}
-	<li class="previous">
-	  <a href="{% url bsblog_main post_list.previous_page_number %}">&larr; Newer</a>
-	</li>
-	{% endif %}
-	{% if post_list.has_next %}
-	<li class="next">
-	  <a href="{% url bsblog_main post_list.next_page_number %}">Older &rarr;</a>
-	</li>
-	{% endif %}
-      </ul>
-    </div>
   </div>
+</div>
+{% endfor %}
+<div class="row">
+  <ul class="pager">
+    {% if post_list.has_previous %}
+    <li class="previous">
+      <a href="{% url bsblog_main post_list.previous_page_number %}">&larr; Newer</a>
+    </li>
+    {% endif %}
+    {% if post_list.has_next %}
+    <li class="next">
+      <a href="{% url bsblog_main post_list.next_page_number %}">Older &rarr;</a>
+    </li>
+    {% endif %}
+  </ul>
 </div>
 {% endblock%}

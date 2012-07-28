@@ -9,9 +9,8 @@
 	<em> by {{ post.user_profile.user.username}} on {{ post.created_date|date:"N j, Y, P T" }}</em>
       </div>
       <hr />
-      <p>
-	{{ post.text_html|truncatewords_html:"100"|safe }}
-      </p>
+      {# markdown will properly wrap the followin text in appropriate tags if needed #}
+      {{ post.text_html|truncatewords_html:"100"|safe }}
       <span><a href="{{ post.get_absolute_url }}">&rarr; read more</a></span>
     </div>
     {% endfor %}

@@ -29,9 +29,10 @@ class Category(models.Model):
 ## maybe whole new projects app
 class Post(taxonomy.TaxonomyMember):
     """Model for each separate post"""
-    title = models.CharField(max_length=100,blank=True)
+    title = models.CharField(max_length=100)
     text_html = models.TextField(blank=True)
     text_markdown = models.TextField()
+    # Why no auto_now_add here?
     created_date = models.DateTimeField('Date Created', db_index=True)
     category = models.ForeignKey(Category, db_index=True)
     user_profile = models.ForeignKey(UserProfile)
